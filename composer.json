@@ -1,0 +1,27 @@
+{
+  "name" : "optigov/php-cmis-client",
+  "type": "library",
+  "homepage": "https://github.com/optigov/php-cmis-client",
+  "description": "A PHP CMIS client library",
+  "keywords": [],
+  "require": {
+    "php": ">=8.0",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "CMIS\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CMIS\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit tests"
+  }
+}
