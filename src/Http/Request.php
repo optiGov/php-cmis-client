@@ -78,9 +78,7 @@ class Request
             $postFields["propertyValue[$idx]"] = $value;
             $idx++;
         }
-
-        var_dump($postFields);
-
+        
         return $postFields;
     }
 
