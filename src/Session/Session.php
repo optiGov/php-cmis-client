@@ -53,11 +53,21 @@ class Session
      * Creates a new document.
      *
      * @param string $name
-     * @return int
+     * @param string $cmisObjectTypeId
+     * @param string $fileContent
+     * @param string $cmisAction
+     * @return SessionCommand
      */
-    public function createDocument(string $name): int
+    public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionCommand
     {
-        return -1;
+        return new SessionCommand(
+            $this->httpClient,
+            RequestFactory::to($this->getRepositoryRootUrl())
+                ->addPostField("cmisAction", $cmisAction)
+                ->addProperty("cmis:objectTypeId", $cmisObjectTypeId)
+                ->addProperty("cmis:name", $name)
+                ->addFile("file", $fileContent)
+        );
     }
 
     /**
@@ -68,7 +78,7 @@ class Session
      * @param string $cmisObjectTypeId
      * @return SessionCommand
      */
-    public function createFolder(string $name, string $cmisAction = "createFolder", string $cmisObjectTypeId = "ONAVO"): SessionCommand
+    public function createFolder(string $name, string $cmisObjectTypeId, string $cmisAction = "createFolder"): SessionCommand
     {
         return new SessionCommand(
             $this->httpClient,
