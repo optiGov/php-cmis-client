@@ -1,6 +1,6 @@
 <?php
 
-namespace OptiGov\Tests\Responsibilities;
+namespace OptiGov\Tests\Entities;
 
 use CMIS\Session\Session;
 use CMIS\Session\SessionFactory;
@@ -21,12 +21,12 @@ class FolderTest extends TestCase
     }
 
     /**
-     * Tests ->alleAntraege()
+     * Tests ->createFolder()
      */
-    public function testAlleAntraege()
+    public function testCreateFolder()
     {
         $response = $this->session
-            ->createFolder("Bewohnerparkausweis | Jane Doe")
+            ->createFolder("Bewohnerparkausweis | Jane Doe", CMIS_OBJECT_TYPE_ID_FOLDER)
             ->addPostField("objectId", "54c7bf80-f4b2-561a-9656-6ccfdc27ae3d")
             ->addProperty("repo[304]", "D1") // dienstleistung id
             ->addProperty("repo[303]", "B2") // buerger id
@@ -39,7 +39,6 @@ class FolderTest extends TestCase
             ->addProperty("odf:lastupdate", "10.01.2022 15:45")
             ->addProperty("odf:authlevel", "hoch")
             ->addProperty("odf:auftragsid", "1")
-            ->addProperty("odf:objecttype", "ONAVO")
             ->execute();
 
         $this->assertSame(

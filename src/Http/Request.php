@@ -22,6 +22,12 @@ class Request
      */
     private array $postFields = [];
 
+    /**
+     * Files of the request.
+     * @var array
+     */
+    private array $files = [];
+
 
     /**
      * @param string $url
@@ -62,6 +68,17 @@ class Request
     }
 
     /**
+     * @param string $name
+     * @param string $content
+     * @return Request
+     */
+    public function addFile(string $name, string $content): static
+    {
+        $this->files[$name] = $content;
+        return $this;
+    }
+
+    /**
      * Returns the post fields.
      *
      * @return array
@@ -80,6 +97,24 @@ class Request
         }
 
         return $postFields;
+    }
+
+    /**
+     * Returns whether the request has files or not.
+     *
+     * @return bool
+     */
+    public function hasFiles(): bool
+    {
+        return !empty($this->files);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        return $this->files;
     }
 
 }

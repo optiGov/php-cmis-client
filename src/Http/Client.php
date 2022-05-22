@@ -96,6 +96,24 @@ class Client
      */
     public function post(Request $request): Response
     {
-        return $this->httpClient->post($request->getUrl(), ["form_params" => $request->getMergedPostFields()]);
+        // send request if it is a default form post request
+        if (!$request->hasFiles())
+            return $this->httpClient->post($request->getUrl(), ["form_params" => $request->getMergedPostFields()]);
+
+        // send request as multipart form request, as request has files
+
+        // add default fields to request
+        $multipartData = [];
+        $data = array_merge($request->getFiles(), $request->getMergedPostFields());
+
+        // add files to multipart data
+        foreach ($data as $name => $content) {
+            $multipartData[] = [
+                "name" => $name,
+                "contents" => $content,
+            ];
+        }
+
+        return $this->httpClient->post($request->getUrl(), ["multipart" => $multipartData]);
     }
 }
