@@ -64,8 +64,9 @@ class Session
      * Creates a new folder.
      *
      * @param string $name
-     * @return int
-     * @throws GuzzleException
+     * @param string $cmisAction
+     * @param string $cmisObjectTypeId
+     * @return SessionCommand
      */
     public function createFolder(string $name, string $cmisAction = "createFolder", string $cmisObjectTypeId = "ONAVO"): SessionCommand
     {
