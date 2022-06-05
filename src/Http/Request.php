@@ -70,11 +70,12 @@ class Request
     /**
      * @param string $name
      * @param string $content
+     * @param string $fileName
      * @return Request
      */
-    public function addFile(string $name, string $content): static
+    public function addFile(string $name, string $content, string $fileName): static
     {
-        $this->files[$name] = $content;
+        $this->files[$name] = ["content" => $content, "filename" => $fileName];
         return $this;
     }
 
