@@ -60,13 +60,13 @@ class Session
      */
     public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionCommand
     {
-        return new SessionCommand(
+        return new SessionDocumentCommand(
             $this->httpClient,
             RequestFactory::to($this->getRepositoryRootUrl())
                 ->addPostField("cmisAction", $cmisAction)
                 ->addProperty("cmis:objectTypeId", $cmisObjectTypeId)
                 ->addProperty("cmis:name", $name)
-                ->addFile("file", $fileContent)
+                ->addFile("file", $fileContent, $name)
         );
     }
 
@@ -74,13 +74,13 @@ class Session
      * Creates a new folder.
      *
      * @param string $name
-     * @param string $cmisAction
      * @param string $cmisObjectTypeId
-     * @return SessionCommand
+     * @param string $cmisAction
+     * @return SessionFolderCommand
      */
-    public function createFolder(string $name, string $cmisObjectTypeId, string $cmisAction = "createFolder"): SessionCommand
+    public function createFolder(string $name, string $cmisObjectTypeId, string $cmisAction = "createFolder"): SessionFolderCommand
     {
-        return new SessionCommand(
+        return new SessionFolderCommand(
             $this->httpClient,
             RequestFactory::to($this->getRepositoryRootUrl())
                 ->addPostField("cmisAction", $cmisAction)

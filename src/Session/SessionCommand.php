@@ -35,7 +35,7 @@ class SessionCommand
      * @return Response
      * @throws GuzzleException
      */
-    public function execute(): Response
+    public function execute(): object
     {
         return $this->httpClient->post($this->request);
     }
