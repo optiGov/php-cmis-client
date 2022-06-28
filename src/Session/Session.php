@@ -3,6 +3,7 @@
 namespace CMIS\Session;
 
 use CMIS\Http\Client;
+use CMIS\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use CMIS\Http\RequestFactory;
 
@@ -33,7 +34,9 @@ class Session
      */
     private string $repositoryId;
 
-
+    /**
+     * @var Client
+     */
     private Client $httpClient;
 
     /**
@@ -61,7 +64,7 @@ class Session
     public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionCommand
     {
         return new SessionDocumentCommand(
-            $this->httpClient,
+            $this,
             RequestFactory::to($this->getRepositoryRootUrl())
                 ->addPostField("cmisAction", $cmisAction)
                 ->addProperty("cmis:objectTypeId", $cmisObjectTypeId)
@@ -81,12 +84,23 @@ class Session
     public function createFolder(string $name, string $cmisObjectTypeId, string $cmisAction = "createFolder"): SessionFolderCommand
     {
         return new SessionFolderCommand(
-            $this->httpClient,
+            $this,
             RequestFactory::to($this->getRepositoryRootUrl())
                 ->addPostField("cmisAction", $cmisAction)
                 ->addProperty("cmis:objectTypeId", $cmisObjectTypeId)
                 ->addProperty("cmis:name", $name)
         );
+    }
+
+    /**
+     * Creates a new request to a given url or the repository root url.
+     *
+     * @param string|null $to
+     * @return Request
+     */
+    public function request(string $to = null): Request
+    {
+       return RequestFactory::to($to ?? $this->getRepositoryRootUrl());
     }
 
     /**
@@ -129,6 +143,14 @@ class Session
     public function getRepositoryId(): string
     {
         return $this->repositoryId;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getHttpClient(): Client
+    {
+        return $this->httpClient;
     }
 
     /**

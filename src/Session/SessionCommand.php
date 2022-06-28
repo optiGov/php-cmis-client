@@ -14,6 +14,11 @@ class SessionCommand
     /**
      * @var Client
      */
+    public Session $session;
+
+    /**
+     * @var Client
+     */
     public Client $httpClient;
 
     /**
@@ -25,9 +30,10 @@ class SessionCommand
      * @param Client $httpClient
      * @param Request $request
      */
-    public function __construct(Client $httpClient, Request $request)
+    public function __construct(Session $session, Request $request)
     {
-        $this->httpClient = $httpClient;
+        $this->session = $session;
+        $this->httpClient = $session->getHttpClient();
         $this->request = $request;
     }
 

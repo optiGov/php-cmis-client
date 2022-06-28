@@ -12,18 +12,28 @@ class Request
 
     /**
      * CMIS properties of the request.
+     *
      * @var array
      */
     private array $properties = [];
 
     /**
      * Post fields of the request.
+     *
      * @var array
      */
     private array $postFields = [];
 
     /**
+     * Url parameters of the request.
+     *
+     * @var array
+     */
+    private array $urlParameters = [];
+
+    /**
      * Files of the request.
+     *
      * @var array
      */
     private array $files = [];
@@ -42,7 +52,11 @@ class Request
      */
     public function getUrl(): string
     {
-        return $this->url;
+        if (empty($this->urlParameters))
+            return $this->url;
+
+        $queryString = http_build_query($this->urlParameters);
+        return $this->url . "?$queryString";
     }
 
     /**
@@ -53,6 +67,17 @@ class Request
     public function addPostField(string $name, string $value): static
     {
         $this->postFields[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return Request
+     */
+    public function addUrlParameter(string $name, string $value): static
+    {
+        $this->urlParameters[$name] = $value;
         return $this;
     }
 

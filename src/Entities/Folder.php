@@ -2,8 +2,15 @@
 
 namespace CMIS\Entities;
 
+use CMIS\Session\Session;
+
 class Folder
 {
+    /**
+     * @var Session
+     */
+    private Session $session;
+
     /**
      * @var string
      */
@@ -33,6 +40,16 @@ class Folder
      * @var string
      */
     public string $parentId;
+
+    /**
+     * Creates a new Folder instance.
+     *
+     * @param Session $session
+     */
+    public function __construct(Session $session)
+    {
+        $this->session = $session;
+    }
 
     /**
      * @return string

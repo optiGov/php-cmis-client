@@ -23,7 +23,7 @@ class SessionDocumentCommand extends SessionCommand
         $responseContent = $response->getBody()->getContents();
         $responseData = json_decode($responseContent, true);
 
-        return (new Document())
+        return (new Document($this->session))
             ->setObjectId($responseData["properties"]["cmis:objectId"]["value"])
             ->setName($responseData["properties"]["cmis:name"]["value"])
             ->setCreationDate($responseData["properties"]["cmis:creationDate"]["value"])

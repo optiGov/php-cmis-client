@@ -2,8 +2,18 @@
 
 namespace CMIS\Entities;
 
+use CMIS\Session\Session;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
+use http\Env\Request;
+
 class Document
 {
+    /**
+     * @var Session
+     */
+    private Session $session;
+
     /**
      * @var string
      */
@@ -23,6 +33,16 @@ class Document
      * @var string
      */
     public string $createdBy;
+
+    /**
+     * Creates a new Document instance.
+     *
+     * @param Session $session
+     */
+    public function __construct(Session $session)
+    {
+        $this->session = $session;
+    }
 
     /**
      * @return string
@@ -94,6 +114,24 @@ class Document
     {
         $this->createdBy = $createdBy;
         return $this;
+    }
+
+    /**
+     * Downloads the content from the CMIS server.
+     *
+     * @param string $cmisSelector
+     * @return string
+     * @throws GuzzleException
+     */
+    public function getContent(string $cmisSelector = "content"): string
+    {
+        // build the resource url
+        $request = $this->session->request()
+            ->addUrlParameter("objectId", $this->objectId)
+            ->addUrlParameter("cmisselector", $cmisSelector);
+
+        // return the response
+        return (string) $this->session->getHttpClient()->get($request)->getBody();
     }
 
 }

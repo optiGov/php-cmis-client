@@ -88,7 +88,7 @@ class Client
     }
 
     /**
-     * Creates a new post request.
+     * Submits a post request.
      *
      * @param Request $request
      * @return Response
@@ -121,5 +121,17 @@ class Client
         }
 
         return $this->httpClient->post($request->getUrl(), ["multipart" => $multipartData]);
+    }
+
+    /**
+     * Submites a get request.
+     *
+     * @param Request $request
+     * @return Response
+     * @throws GuzzleException
+     */
+    public function get(Request $request): Response
+    {
+        return $this->httpClient->get($request->getUrl());
     }
 }
