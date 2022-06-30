@@ -131,13 +131,13 @@ class Document
     }
 
     /**
-     * Downloads the content from the CMIS server.
+     * Returns the properties of the document.
      *
      * @param string $cmisSelector
-     * @return string
+     * @return array
      * @throws GuzzleException
      */
-    public function getProperties(string $cmisSelector = "properties"): string
+    public function getProperties(string $cmisSelector = "properties"): array
     {
         // get the content and return as string
         $response = $this->getCMISData($cmisSelector);
