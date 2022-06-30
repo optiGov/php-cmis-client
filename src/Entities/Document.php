@@ -125,13 +125,40 @@ class Document
      */
     public function getContent(string $cmisSelector = "content"): string
     {
+        // get the content and return as string
+        $response = $this->getCMISData($cmisSelector);
+        return (string)$response->getBody();
+    }
+
+    /**
+     * Downloads the content from the CMIS server.
+     *
+     * @param string $cmisSelector
+     * @return string
+     * @throws GuzzleException
+     */
+    public function getProperties(string $cmisSelector = "properties"): string
+    {
+        // get the content and return as string
+        $response = $this->getCMISData($cmisSelector);
+        return json_decode((string)$response->getBody(), true);
+    }
+
+    /**
+     * Performs a GET call against the CMIS api with a given CMIS selector.
+     *
+     * @param string $cmisSelector
+     * @return Response
+     * @throws GuzzleException
+     */
+    public function getCMISData(string $cmisSelector): Response
+    {
         // build the resource url
         $request = $this->session->request()
             ->addUrlParameter("objectId", $this->objectId)
             ->addUrlParameter("cmisselector", $cmisSelector);
 
-        // return the response
-        return (string) $this->session->getHttpClient()->get($request)->getBody();
+        return $this->session->getHttpClient()->get($request);
     }
 
 }
