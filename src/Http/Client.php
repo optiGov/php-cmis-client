@@ -47,7 +47,6 @@ class Client
                 ]
             ]
         );
-        var_dump(["verify" => $this->verifySSL]);
         return $this;
     }
 
