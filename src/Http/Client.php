@@ -22,6 +22,12 @@ class Client
     private string $password;
 
     /**
+     * SSL connection verification.
+     * @var bool
+     */
+    private bool $verifySSL = true;
+
+    /**
      * @var \GuzzleHttp\Client
      */
     private \GuzzleHttp\Client $httpClient;
@@ -34,12 +40,14 @@ class Client
     {
         $this->httpClient = new \GuzzleHttp\Client(
             [
+                "verify" => $this->verifySSL,
                 "auth" => [
                     $this->user,
                     $this->password
                 ]
             ]
         );
+        var_dump(["verify" => $this->verifySSL]);
         return $this;
     }
 
@@ -84,6 +92,24 @@ class Client
     public function setPassword(string $password): static
     {
         $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function SSLisVerified(): bool
+    {
+        return $this->verifySSL;
+    }
+
+    /**
+     * @param bool $verifySSL
+     * @return Client
+     */
+    public function verifySSL(bool $verifySSL): static
+    {
+        $this->verifySSL = $verifySSL;
         return $this;
     }
 

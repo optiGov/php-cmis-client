@@ -35,6 +35,12 @@ class Session
     private string $repositoryId;
 
     /**
+     * session options.
+     * @var SessionOptions
+     */
+    private SessionOptions $options;
+
+    /**
      * @var Client
      */
     private Client $httpClient;
@@ -48,6 +54,7 @@ class Session
     {
         $this->httpClient = (new Client())->setUser($this->user)
             ->setPassword($this->password)
+            ->verifySSL($this->options->getOption("verify"))
             ->initialize();
         return $this;
     }
@@ -190,6 +197,16 @@ class Session
     public function setRepositoryId(string $repositoryId): Session
     {
         $this->repositoryId = $repositoryId;
+        return $this;
+    }
+
+    /**
+     * @param SessionOptions $options
+     * @return Session
+     */
+    public function setOptions(SessionOptions $options): Session
+    {
+        $this->options = $options;
         return $this;
     }
 }
