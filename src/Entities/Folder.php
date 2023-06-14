@@ -17,29 +17,29 @@ class Folder
     public string $objectId;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $name;
+    public string|null $name;
 
     /**
-     * @var int
+     * @var int|null
      */
-    public int $creationDate;
+    public int|null $creationDate;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $createdBy;
+    public string|null $createdBy;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $path;
+    public string|null $path;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $parentId;
+    public string|null $parentId;
 
     /**
      * Creates a new Folder instance.
@@ -70,90 +70,90 @@ class Folder
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): string|null
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return Folder
      */
-    public function setName(string $name): Folder
+    public function setName(string|null $name): Folder
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCreationDate(): int
+    public function getCreationDate(): int|null
     {
         return $this->creationDate;
     }
 
     /**
-     * @param int $creationDate
+     * @param int|null $creationDate
      * @return Folder
      */
-    public function setCreationDate(int $creationDate): Folder
+    public function setCreationDate(int|null $creationDate): Folder
     {
         $this->creationDate = $creationDate;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedBy(): string
+    public function getCreatedBy(): string|null
     {
         return $this->createdBy;
     }
 
     /**
-     * @param string $createdBy
+     * @param string|null $createdBy
      * @return Folder
      */
-    public function setCreatedBy(string $createdBy): Folder
+    public function setCreatedBy(string|null $createdBy): Folder
     {
         $this->createdBy = $createdBy;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPath(): string
+    public function getPath(): string|null
     {
         return $this->path;
     }
 
     /**
-     * @param string $path
+     * @param string|null $path
      * @return Folder
      */
-    public function setPath(string $path): Folder
+    public function setPath(string|null $path): Folder
     {
         $this->path = $path;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getParentId(): string
+    public function getParentId(): string|null
     {
         return $this->parentId;
     }
 
     /**
-     * @param string $parentId
+     * @param string|null $parentId
      * @return Folder
      */
-    public function setParentId(string $parentId): Folder
+    public function setParentId(string|null $parentId): Folder
     {
         $this->parentId = $parentId;
         return $this;

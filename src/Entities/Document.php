@@ -5,7 +5,6 @@ namespace CMIS\Entities;
 use CMIS\Session\Session;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
-use http\Env\Request;
 
 class Document
 {
@@ -20,19 +19,19 @@ class Document
     public string $objectId;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $name;
+    public string|null $name;
 
     /**
-     * @var int
+     * @var int|null
      */
-    public int $creationDate;
+    public int|null $creationDate;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $createdBy;
+    public string|null $createdBy;
 
     /**
      * Creates a new Document instance.
@@ -63,54 +62,54 @@ class Document
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): string|null
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return Document
      */
-    public function setName(string $name): Document
+    public function setName(string|null $name): Document
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCreationDate(): int
+    public function getCreationDate(): int|null
     {
         return $this->creationDate;
     }
 
     /**
-     * @param int $creationDate
+     * @param int|null $creationDate
      * @return Document
      */
-    public function setCreationDate(int $creationDate): Document
+    public function setCreationDate(int|null $creationDate): Document
     {
         $this->creationDate = $creationDate;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedBy(): string
+    public function getCreatedBy(): string|null
     {
         return $this->createdBy;
     }
 
     /**
-     * @param string $createdBy
+     * @param string|null $createdBy
      * @return Document
      */
-    public function setCreatedBy(string $createdBy): Document
+    public function setCreatedBy(string|null $createdBy): Document
     {
         $this->createdBy = $createdBy;
         return $this;
