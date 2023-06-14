@@ -5,6 +5,7 @@ namespace CMIS\Session;
 use CMIS\Entities\Folder;
 use CMIS\Http\Client;
 use CMIS\Http\Request;
+use CMIS\Utils\Arr;
 use GuzzleHttp\Exception\GuzzleException;
 use CMIS\Http\RequestFactory;
 use GuzzleHttp\Psr7\Response;
@@ -23,11 +24,11 @@ class SessionFolderCommand extends SessionCommand
         $responseData = json_decode($responseContent, true);
 
         return (new Folder($this->session))
-            ->setObjectId($responseData["properties"]["cmis:objectId"]["value"])
-            ->setName($responseData["properties"]["cmis:name"]["value"])
-            ->setCreationDate($responseData["properties"]["cmis:creationDate"]["value"])
-            ->setCreatedBy($responseData["properties"]["cmis:createdBy"]["value"])
-            ->setParentId($responseData["properties"]["cmis:parentId"]["value"])
-            ->setPath($responseData["properties"]["cmis:path"]["value"]);
+            ->setObjectId(Arr::get($responseData, "properties.cmis:objectId.value"))
+            ->setName(Arr::get($responseData, "properties.cmis:name.value"))
+            ->setCreationDate(Arr::get($responseData, "properties.cmis:creationDate.value"))
+            ->setCreatedBy(Arr::get($responseData, "properties.cmis:createdBy.value"))
+            ->setParentId(Arr::get($responseData, "properties.cmis:parentId.value"))
+            ->setPath(Arr::get($responseData, "properties.cmis:path.value"));
     }
 }
