@@ -68,7 +68,7 @@ class Session
      * @param string $cmisAction
      * @return SessionCommand
      */
-    public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionCommand
+    public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionDocumentCommand
     {
         return new SessionDocumentCommand(
             $this,
