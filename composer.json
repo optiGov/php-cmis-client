@@ -3,6 +3,7 @@
   "type": "library",
   "homepage": "https://github.com/optigov/php-cmis-client",
   "description": "A PHP CMIS client library",
+  "license": "MIT",
   "keywords": [],
   "require": {
     "php": ">=8.0",
