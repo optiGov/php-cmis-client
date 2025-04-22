@@ -11,15 +11,21 @@ class Client
 
     /**
      * CMIS user name.
-     * @var string
+     * @var string|null
      */
-    private string $user;
+    private string|null $user = null;
 
     /**
      * CMIS password.
-     * @var string
+     * @var string|null
      */
-    private string $password;
+    private string|null $password = null;
+
+    /**
+     * CMIS bearer token.
+     * @var string|null
+     */
+    private string|null $bearerToken = null;
 
     /**
      * SSL connection verification.
@@ -38,41 +44,62 @@ class Client
      */
     public function initialize(): static
     {
-        $this->httpClient = new \GuzzleHttp\Client(
-            [
-                "verify" => $this->verifySSL,
-                "auth" => [
+        $options = ["verify" => $this->verifySSL];
+
+        // if bearer token is set, use it for authentication
+        if($this->bearerToken){
+            $options["headers"] = [
+                "Authorization" => "Bearer " . $this->bearerToken
+            ];
+        } else {
+            // if user and password are set, use them for basic authentication
+            if ($this->user && $this->password) {
+                $options["auth"] = [
                     $this->user,
                     $this->password
-                ]
-            ]
-        );
+                ];
+            }
+        }
+
+        $this->httpClient = new \GuzzleHttp\Client($options);
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUser(): string
+    public function getUser(): ?string
     {
         return $this->user;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
     /**
-     * @param string $user
+     * @return string|null
+     */
+    public function getBearerToken(): ?string
+    {
+        return $this->bearerToken;
+    }
+
+    /**
+     * @param string|null $user
+     * @param string|null $password
+     * @param string|null $bearerToken
      * @return Client
      */
-    public function setUser(string $user): static
+    public function setAuth(string $user = null, string $password = null, string $bearerToken = null): static
     {
         $this->user = $user;
+        $this->password = $password;
+        $this->bearerToken = $bearerToken;
         return $this;
     }
 
@@ -82,16 +109,6 @@ class Client
     public function getHttpClient(): \GuzzleHttp\Client
     {
         return $this->httpClient;
-    }
-
-    /**
-     * @param string $password
-     * @return Client
-     */
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-        return $this;
     }
 
     /**

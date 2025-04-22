@@ -12,15 +12,21 @@ class Session
 
     /**
      * CMIS user name.
-     * @var string
+     * @var string|null
      */
-    private string $user;
+    private string|null $user = null;
 
     /**
      * CMIS password.
-     * @var string
+     * @var string|null
      */
-    private string $password;
+    private string|null $password = null;
+
+    /**
+     * CMIS bearer token.
+     * @var string|null
+     */
+    private string|null $bearerToken = null;
 
     /**
      * CMIS endpoint url.
@@ -29,7 +35,7 @@ class Session
     private string $url;
 
     /**
-     * CMIS reposirtory id.
+     * CMIS repository id.
      * @var string
      */
     private string $repositoryId;
@@ -46,14 +52,13 @@ class Session
     private Client $httpClient;
 
     /**
-     * Initializes the connciton.
+     * Initializes the connection.
      *
      * @return $this
      */
     public function initialize(): static
     {
-        $this->httpClient = (new Client())->setUser($this->user)
-            ->setPassword($this->password)
+        $this->httpClient = (new Client())->setAuth($this->user, $this->password, $this->bearerToken)
             ->verifySSL($this->options->getOption("verify"))
             ->initialize();
         return $this;
@@ -66,7 +71,7 @@ class Session
      * @param string $cmisObjectTypeId
      * @param string $fileContent
      * @param string $cmisAction
-     * @return SessionCommand
+     * @return SessionDocumentCommand
      */
     public function createDocument(string $name, string $cmisObjectTypeId, string $fileContent, string $cmisAction = "createDocument"): SessionDocumentCommand
     {
@@ -107,7 +112,7 @@ class Session
      */
     public function request(string $to = null): Request
     {
-       return RequestFactory::to($to ?? $this->getRepositoryRootUrl());
+        return RequestFactory::to($to ?? $this->getRepositoryRootUrl());
     }
 
     /**
@@ -117,23 +122,31 @@ class Session
      */
     private function getRepositoryRootUrl(): string
     {
-        return  "{$this->url}/{$this->repositoryId}/root";
+        return "{$this->url}/{$this->repositoryId}/root";
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUser(): string
+    public function getUser(): ?string
     {
         return $this->user;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBearerToken(): ?string
+    {
+        return $this->bearerToken;
     }
 
     /**
@@ -161,32 +174,26 @@ class Session
     }
 
     /**
-     * @param string $user
-     * @return Session
-     */
-    public function setUser(string $user): Session
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @param string $password
-     * @return Session
-     */
-    public function setPassword(string $password): Session
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
      * @param string $url
      * @return Session
      */
     public function setUrl(string $url): Session
     {
         $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * @param string|null $user
+     * @param string|null $password
+     * @param string|null $bearerToken
+     * @return Session
+     */
+    public function setAuth(string $user = null, string $password = null, string $bearerToken = null): static
+    {
+        $this->user = $user;
+        $this->password = $password;
+        $this->bearerToken = $bearerToken;
         return $this;
     }
 
