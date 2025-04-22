@@ -14,10 +14,10 @@ class FolderTest extends TestCase
     protected function setUp(): void
     {
         $this->session = SessionFactory::create(
+            CMIS_URL,
+            CMIS_REPOSITORY_ID,
             CMIS_USER,
             CMIS_PASSWORD,
-            CMIS_URL,
-            CMIS_REPOSITORY_ID
         );
     }
 
