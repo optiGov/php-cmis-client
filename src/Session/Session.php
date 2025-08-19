@@ -179,7 +179,7 @@ class Session
      */
     public function setUrl(string $url): Session
     {
-        $this->url = $url;
+        $this->url = rtrim($url, '/');
         return $this;
     }
 
