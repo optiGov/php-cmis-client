@@ -113,7 +113,7 @@ class Session
      * @param string $cmisAction
      * @return SessionDocumentCommand
      */
-    public function updateDocumentContent(string $objectId, string $fileContent, string $fileName, string $cmisAction = "setContent"): SessionDocumentCommand
+    public function updateDocumentContent(string $objectId, string $fileName, string $fileContent, string $cmisAction = "setContent"): SessionDocumentCommand
     {
         return new SessionDocumentCommand(
             $this,

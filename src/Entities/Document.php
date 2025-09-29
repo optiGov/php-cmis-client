@@ -153,7 +153,7 @@ class Document
      */
     public function updateContent(string $fileContent, string $fileName): Document
     {
-        return $this->session->updateDocumentContent($this->objectId, $fileContent, $fileName)->execute();
+        return $this->session->updateDocumentContent($this->objectId, $fileName, $fileContent)->execute();
     }
 
     /**

@@ -67,8 +67,8 @@ class DocumentUpdateTest extends TestCase
         // Update the document content using session method
         $updatedDocument = $this->session->updateDocumentContent(
             $document->getObjectId(),
+            $fileName,
             $updatedContent,
-            $fileName
         )->execute();
 
         $this->assertInstanceOf(Document::class, $updatedDocument);
