@@ -105,6 +105,25 @@ class Session
     }
 
     /**
+     * Updates an existing document's content.
+     *
+     * @param string $objectId
+     * @param string $fileContent
+     * @param string $fileName
+     * @return SessionDocumentUpdateCommand
+     */
+    public function updateDocument(string $objectId, string $fileContent, string $fileName): SessionDocumentUpdateCommand
+    {
+        return new SessionDocumentUpdateCommand(
+            $this,
+            RequestFactory::to($this->getRepositoryRootUrl())
+                ->addPostField("cmisaction", "update")
+                ->addPostField("objectId", $objectId)
+                ->addFile("file", $fileContent, $fileName)
+        );
+    }
+
+    /**
      * Creates a new request to a given url or the repository root url.
      *
      * @param string|null $to
