@@ -144,6 +144,19 @@ class Document
     }
 
     /**
+     * Updates the content of this document.
+     *
+     * @param string $fileContent
+     * @param string $fileName
+     * @return Document
+     * @throws GuzzleException
+     */
+    public function updateContent(string $fileContent, string $fileName): Document
+    {
+        return $this->session->updateDocument($this->objectId, $fileContent, $fileName)->execute();
+    }
+
+    /**
      * Performs a GET call against the CMIS api with a given CMIS selector.
      *
      * @param string $cmisSelector
