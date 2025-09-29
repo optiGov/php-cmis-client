@@ -65,7 +65,7 @@ class DocumentUpdateTest extends TestCase
         $this->assertNotEmpty($document->getObjectId());
 
         // Update the document content using session method
-        $updatedDocument = $this->session->updateDocument(
+        $updatedDocument = $this->session->updateDocumentContent(
             $document->getObjectId(),
             $updatedContent,
             $fileName

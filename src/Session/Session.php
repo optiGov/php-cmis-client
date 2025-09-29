@@ -110,16 +110,34 @@ class Session
      * @param string $objectId
      * @param string $fileContent
      * @param string $fileName
-     * @return SessionDocumentUpdateCommand
+     * @param string $cmisAction
+     * @return SessionDocumentCommand
      */
-    public function updateDocument(string $objectId, string $fileContent, string $fileName): SessionDocumentUpdateCommand
+    public function updateDocumentContent(string $objectId, string $fileContent, string $fileName, string $cmisAction = "setContent"): SessionDocumentCommand
     {
-        return new SessionDocumentUpdateCommand(
+        return new SessionDocumentCommand(
             $this,
             RequestFactory::to($this->getRepositoryRootUrl())
-                ->addPostField("cmisaction", "update")
+                ->addPostField("cmisAction", $cmisAction)
                 ->addPostField("objectId", $objectId)
-                ->addFile("file", $fileContent, $fileName)
+                ->addFile("content", $fileContent, $fileName)
+        );
+    }
+
+    /**
+     * Creates a new request to update document properties.
+     *
+     * @param string $objectId
+     * @param string $cmisAction
+     * @return SessionDocumentCommand
+     */
+    public function updateDocument(string $objectId, string $cmisAction = "update"): SessionDocumentCommand
+    {
+        return new SessionDocumentCommand(
+            $this,
+            RequestFactory::to($this->getRepositoryRootUrl())
+                ->addPostField("cmisAction", $cmisAction)
+                ->addPostField("objectId", $objectId)
         );
     }
 
