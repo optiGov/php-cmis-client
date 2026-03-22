@@ -59,10 +59,10 @@ class SessionCommand
 
     /**
      * @param string $id
-     * @param string $value
+     * @param string|array $value
      * @return SessionCommand
      */
-    public function addProperty(string $id, string $value): static
+    public function addProperty(string $id, string|array $value): static
     {
         $this->request->addProperty($id, $value);
         return $this;

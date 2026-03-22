@@ -83,10 +83,10 @@ class Request
 
     /**
      * @param string $id
-     * @param string $value
+     * @param string|array $value
      * @return Request
      */
-    public function addProperty(string $id, string $value): static
+    public function addProperty(string $id, string|array $value): static
     {
         $this->properties[$id] = $value;
         return $this;
@@ -118,7 +118,13 @@ class Request
         $idx = 0;
         foreach ($this->properties as $id => $value) {
             $postFields["propertyId[$idx]"] = $id;
-            $postFields["propertyValue[$idx]"] = $value;
+            if (is_array($value)) {
+                foreach ($value as $valueIdx => $v) {
+                    $postFields["propertyValue[$idx][$valueIdx]"] = $v;
+                }
+            } else {
+                $postFields["propertyValue[$idx]"] = $value;
+            }
             $idx++;
         }
 
