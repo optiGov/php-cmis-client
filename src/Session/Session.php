@@ -4,6 +4,7 @@ namespace CMIS\Session;
 
 use CMIS\Http\Client;
 use CMIS\Http\Request;
+use CMIS\Utils\Arr;
 use GuzzleHttp\Exception\GuzzleException;
 use CMIS\Http\RequestFactory;
 
@@ -139,6 +140,38 @@ class Session
                 ->addPostField("cmisAction", $cmisAction)
                 ->addPostField("objectId", $objectId)
         );
+    }
+
+    /**
+     * Creates a new request to update folder properties.
+     *
+     * @param string $objectId
+     * @param string $cmisAction
+     * @return SessionFolderCommand
+     */
+    public function updateFolder(string $objectId, string $cmisAction = "update"): SessionFolderCommand
+    {
+        return new SessionFolderCommand(
+            $this,
+            RequestFactory::to($this->getRepositoryRootUrl())
+                ->addPostField("cmisAction", $cmisAction)
+                ->addPostField("objectId", $objectId)
+        );
+    }
+
+    /**
+     * Retrieves repository information from the CMIS server.
+     * Can be used to validate that the connection details (host, credentials, repository ID) are correct.
+     *
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getRepositoryInfo(): array
+    {
+        $request = RequestFactory::to($this->url);
+        $response = $this->httpClient->get($request);
+        $data = json_decode((string)$response->getBody(), true);
+        return Arr::get($data, $this->repositoryId, []);
     }
 
     /**

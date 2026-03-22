@@ -3,6 +3,7 @@
 namespace CMIS\Entities;
 
 use CMIS\Session\Session;
+use CMIS\Session\SessionDocumentCommand;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 
@@ -154,6 +155,17 @@ class Document
     public function updateContent(string $fileContent, string $fileName): Document
     {
         return $this->session->updateDocumentContent($this->objectId, $fileName, $fileContent)->execute();
+    }
+
+    /**
+     * Returns a command to update this document's properties.
+     * Chain addProperty() calls then call execute() to apply.
+     *
+     * @return SessionDocumentCommand
+     */
+    public function updateProperties(): SessionDocumentCommand
+    {
+        return $this->session->updateDocument($this->objectId);
     }
 
     /**

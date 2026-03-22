@@ -3,6 +3,7 @@
 namespace CMIS\Entities;
 
 use CMIS\Session\Session;
+use CMIS\Session\SessionFolderCommand;
 
 class Folder
 {
@@ -157,6 +158,17 @@ class Folder
     {
         $this->parentId = $parentId;
         return $this;
+    }
+
+    /**
+     * Returns a command to update this folder's properties.
+     * Chain addProperty() calls then call execute() to apply.
+     *
+     * @return SessionFolderCommand
+     */
+    public function updateProperties(): SessionFolderCommand
+    {
+        return $this->session->updateFolder($this->objectId);
     }
 
 }
