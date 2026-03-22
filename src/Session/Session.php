@@ -134,12 +134,7 @@ class Session
      */
     public function updateDocument(string $objectId, string $cmisAction = "update"): SessionDocumentCommand
     {
-        return new SessionDocumentCommand(
-            $this,
-            RequestFactory::to($this->getRepositoryRootUrl())
-                ->addPostField("cmisAction", $cmisAction)
-                ->addPostField("objectId", $objectId)
-        );
+        return new SessionDocumentCommand($this, $this->makeUpdateRequest($objectId, $cmisAction));
     }
 
     /**
@@ -151,12 +146,21 @@ class Session
      */
     public function updateFolder(string $objectId, string $cmisAction = "update"): SessionFolderCommand
     {
-        return new SessionFolderCommand(
-            $this,
-            RequestFactory::to($this->getRepositoryRootUrl())
-                ->addPostField("cmisAction", $cmisAction)
-                ->addPostField("objectId", $objectId)
-        );
+        return new SessionFolderCommand($this, $this->makeUpdateRequest($objectId, $cmisAction));
+    }
+
+    /**
+     * Builds the base request for an "update" cmisAction on a given object.
+     *
+     * @param string $objectId
+     * @param string $cmisAction
+     * @return Request
+     */
+    private function makeUpdateRequest(string $objectId, string $cmisAction): Request
+    {
+        return RequestFactory::to($this->getRepositoryRootUrl())
+            ->addPostField("cmisAction", $cmisAction)
+            ->addPostField("objectId", $objectId);
     }
 
     /**
@@ -245,9 +249,9 @@ class Session
 
     /**
      * @param string $url
-     * @return Session
+     * @return static
      */
-    public function setUrl(string $url): Session
+    public function setUrl(string $url): static
     {
         $this->url = rtrim($url, '/');
         return $this;
@@ -269,9 +273,9 @@ class Session
 
     /**
      * @param string $repositoryId
-     * @return Session
+     * @return static
      */
-    public function setRepositoryId(string $repositoryId): Session
+    public function setRepositoryId(string $repositoryId): static
     {
         $this->repositoryId = $repositoryId;
         return $this;
@@ -279,9 +283,9 @@ class Session
 
     /**
      * @param SessionOptions $options
-     * @return Session
+     * @return static
      */
-    public function setOptions(SessionOptions $options): Session
+    public function setOptions(SessionOptions $options): static
     {
         $this->options = $options;
         return $this;

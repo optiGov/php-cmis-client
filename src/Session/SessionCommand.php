@@ -12,19 +12,19 @@ class SessionCommand
 {
 
     /**
-     * @var Client
+     * @var Session
      */
-    public Session $session;
+    protected Session $session;
 
     /**
      * @var Client
      */
-    public Client $httpClient;
+    protected Client $httpClient;
 
     /**
      * @var Request
      */
-    public Request $request;
+    protected Request $request;
 
     /**
      * @param Client $httpClient
@@ -44,6 +44,14 @@ class SessionCommand
     public function execute(): object
     {
         return $this->httpClient->post($this->request);
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 
     /**
