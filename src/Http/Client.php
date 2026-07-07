@@ -28,37 +28,29 @@ class Client
     private string|null $bearerToken = null;
 
     /**
-     * SSL connection verification.
-     * @var bool
+     * Guzzle client options (verify, curl, ...).
+     * @var array<string, mixed>
      */
-    private bool $verifySSL = true;
+    private array $options = ["verify" => true];
 
     /**
      * @var \GuzzleHttp\Client
      */
     private \GuzzleHttp\Client $httpClient;
 
-
     /**
      * @return $this
      */
     public function initialize(): static
     {
-        $options = ["verify" => $this->verifySSL];
+        $options = $this->getOptions();
 
-        // if bearer token is set, use it for authentication
-        if($this->bearerToken){
-            $options["headers"] = [
-                "Authorization" => "Bearer " . $this->bearerToken
-            ];
-        } else {
+        if ($this->bearerToken) {
+            // if bearer token is set, use it for authentication
+            $options["headers"]["Authorization"] = "Bearer " . $this->bearerToken;
+        } elseif ($this->user && $this->password) {
             // if user and password are set, use them for basic authentication
-            if ($this->user && $this->password) {
-                $options["auth"] = [
-                    $this->user,
-                    $this->password
-                ];
-            }
+            $options["auth"] = [$this->user, $this->password];
         }
 
         $this->httpClient = new \GuzzleHttp\Client($options);
@@ -112,11 +104,21 @@ class Client
     }
 
     /**
-     * @return bool
+     * @return array<string, mixed>
      */
-    public function SSLisVerified(): bool
+    public function getOptions(): array
     {
-        return $this->verifySSL;
+        return $this->options;
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     * @return Client
+     */
+    public function setOptions(array $options): static
+    {
+        $this->options = $options;
+        return $this;
     }
 
     /**
@@ -125,8 +127,16 @@ class Client
      */
     public function verifySSL(bool $verifySSL): static
     {
-        $this->verifySSL = $verifySSL;
+        $this->options["verify"] = $verifySSL;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function SSLisVerified(): bool
+    {
+        return (bool)($this->options["verify"] ?? true);
     }
 
     /**

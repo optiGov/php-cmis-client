@@ -60,7 +60,7 @@ class Session
     public function initialize(): static
     {
         $this->httpClient = (new Client())->setAuth($this->user, $this->password, $this->bearerToken)
-            ->verifySSL($this->options->getOption("verify"))
+            ->setOptions($this->options->getOptions())
             ->initialize();
         return $this;
     }
