@@ -5,12 +5,18 @@ namespace CMIS\Session;
 class SessionOptions
 {
     /**
-     * Session options.
-     * @var array
+     * Session options (forwarded as Guzzle options).
+     * @var array<string, mixed>
      */
-    private array $options = [
-        "verify" => true,
-    ];
+    private array $options;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function __construct(array $options = ["verify" => true])
+    {
+        $this->options = $options;
+    }
 
     /**
      * @param string $name
@@ -29,6 +35,14 @@ class SessionOptions
      */
     public function getOption(string $name): mixed
     {
-        return $this->options[$name];
+        return $this->options[$name] ?? null;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }
