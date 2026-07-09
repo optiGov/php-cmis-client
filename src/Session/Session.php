@@ -2,6 +2,7 @@
 
 namespace CMIS\Session;
 
+use CMIS\Entities\Document;
 use CMIS\Http\Client;
 use CMIS\Http\Request;
 use CMIS\Utils\Arr;
@@ -176,6 +177,33 @@ class Session
         $response = $this->httpClient->get($request);
         $data = json_decode((string)$response->getBody(), true);
         return Arr::get($data, $this->repositoryId, []);
+    }
+
+    /**
+     * Retrieves an object by id, resolving to the latest version of its version
+     * series. On repositories that version documents a stored id may reference
+     * an outdated version that can no longer be modified; this returns the
+     * current version.
+     *
+     * @param string $objectId
+     * @return Document
+     * @throws GuzzleException
+     */
+    public function getObjectOfLatestVersion(string $objectId): Document
+    {
+        $request = RequestFactory::to($this->getRepositoryRootUrl())
+            ->addUrlParameter("cmisselector", "object")
+            ->addUrlParameter("objectId", $objectId)
+            ->addUrlParameter("returnVersion", "latest");
+
+        $response = $this->httpClient->get($request);
+        $responseData = json_decode((string)$response->getBody(), true);
+
+        return (new Document($this))
+            ->setObjectId(Arr::get($responseData, "properties.cmis:objectId.value"))
+            ->setName(Arr::get($responseData, "properties.cmis:name.value"))
+            ->setCreationDate(Arr::get($responseData, "properties.cmis:creationDate.value"))
+            ->setCreatedBy(Arr::get($responseData, "properties.cmis:createdBy.value"));
     }
 
     /**
