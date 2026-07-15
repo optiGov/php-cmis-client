@@ -114,6 +114,11 @@ class Request
         // add post fields
         $postFields = $this->postFields;
 
+        // add UTF-8 _charset_ default charset indicator
+        if (!array_key_exists("_charset_", $postFields)) {
+            $postFields = ["_charset_" => "UTF-8"] + $postFields;
+        }
+
         // add properties
         $idx = 0;
         foreach ($this->properties as $id => $value) {

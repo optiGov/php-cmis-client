@@ -164,15 +164,39 @@ class Client
                     "contents" => $content
                 ];
             } else {
+                // send utf-8 encoded filename and ascii fallback filename
+                $asciiFilename = $this->getAsciiFilename($content["filename"]);
+                $filename = rawurlencode($content["filename"]);
                 $multipartData[] = [
                     "name" => $name,
                     "contents" => $content["content"],
+                    // used by guzzle to guess the mimetype
                     "filename" => $content["filename"],
+                    "headers" => ["Content-Disposition" => "form-data; name=\"$name\"; filename=\"$asciiFilename\"; filename*=UTF-8''$filename"],
                 ];
             }
         }
 
         return $this->httpClient->post($request->getUrl(), ["multipart" => $multipartData]);
+    }
+
+    /**
+     * Transliterates the filename to an ASCII fallback for the Content-Disposition Header
+     *
+     * @param string $filename
+     * @return string
+     */
+    private function getAsciiFilename(string $filename): string
+    {
+        if (function_exists('transliterator_transliterate')) {
+            $result = transliterator_transliterate('Any-Latin; Latin-ASCII', $filename);
+            if ($result !== false) {
+                $filename = $result;
+            }
+        }
+
+        // only keep ASCII chars
+        return preg_replace('/[^\x20-\x7E]/', '_', $filename);
     }
 
     /**
