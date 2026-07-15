@@ -43,6 +43,29 @@ class RequestTest extends TestCase
     }
 
     // -------------------------------------------------------------------------
+    // _charset_ indicator
+    // -------------------------------------------------------------------------
+
+    public function testCharsetDefaultsToUtf8(): void
+    {
+        $request = new Request('http://example.com');
+
+        $fields = $request->getMergedPostFields();
+
+        $this->assertSame('UTF-8', $fields['_charset_']);
+    }
+
+    public function testCharsetIsNotOverriddenWhenCallerSetsIt(): void
+    {
+        $request = new Request('http://example.com');
+        $request->addPostField('_charset_', 'ISO-8859-1');
+
+        $fields = $request->getMergedPostFields();
+
+        $this->assertSame('ISO-8859-1', $fields['_charset_']);
+    }
+
+    // -------------------------------------------------------------------------
     // Scalar properties
     // -------------------------------------------------------------------------
 
